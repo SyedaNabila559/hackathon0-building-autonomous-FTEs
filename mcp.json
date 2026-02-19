@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "email": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-email"]
+    },
+    "browser": {
+      "command": "npx",
+      "args": ["-y", "playwright-mcp", "--allow-web"]
+    }
+  }
+}

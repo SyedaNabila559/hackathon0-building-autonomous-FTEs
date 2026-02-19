@@ -1,0 +1,309 @@
+"""
+Email Manager Skill - Urgent Email Checker
+Uses credentials.json (Google OAuth) to check for urgent emails
+and saves them as .md files in vault/Needs_Action.
+"""
+
+import os
+import sys
+import json
+import base64
+import re
+from pathlib import Path
+from datetime import datetime
+from email.utils import parsedate_to_datetime
+
+# Google imports
+try:
+    from google.auth.transport.requests import Request
+    from google.oauth2.credentials import Credentials
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build
+except ImportError:
+    pass
+
+# Ensure project root is in path
+PROJECT_ROOT = Path(".")
+sys.path.insert(0, str(PROJECT_ROOT))
+
+CREDENTIALS_FILE = PROJECT_ROOT / "credentials.json"
+TOKEN_FILE = PROJECT_ROOT / "token.json"
+VAULT_DIR = PROJECT_ROOT / "vault"
+NEEDS_ACTION_DIR = VAULT_DIR / "Needs_Action"
+
+# Gmail API scopes
+SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+
+
+def ensure_directories():
+    """Ensure required directories exist."""
+    NEEDS_ACTION_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def get_gmail_service():
+    """
+    Authenticate and return Gmail API service.
+    Uses OAuth 2.0 with credentials.json.
+    """
+    if not CREDENTIALS_FILE.exists():
+        raise FileNotFoundError(f"credentials.json not found at {CREDENTIALS_FILE}")
+
+    creds = None
+
+    # Load existing token if available
+    if TOKEN_FILE.exists():
+        creds = Credentials.from_authorized_user_file(str(TOKEN_FILE), SCOPES)
+
+    # If no valid credentials, authenticate
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                str(CREDENTIALS_FILE), SCOPES
+            )
+            creds = flow.run_local_server(port=0)
+
+        # Save credentials for next run
+        TOKEN_FILE.write_text(creds.to_json())
+
+    return build("gmail", "v1", credentials=creds)
+
+
+def sanitize_filename(text: str, max_length: int = 50) -> str:
+    """Create a safe filename from text."""
+    # Remove or replace invalid characters
+    safe = re.sub(r'[<>:"/\\|?*]', '', text)
+    safe = re.sub(r'\s+', '_', safe)
+    return safe[:max_length]
+
+
+def get_email_body(payload) -> str:
+    """Extract email body from message payload."""
+    body = ""
+
+    if "body" in payload and payload["body"].get("data"):
+        body = base64.urlsafe_b64decode(payload["body"]["data"]).decode("utf-8", errors="ignore")
+    elif "parts" in payload:
+        for part in payload["parts"]:
+            mime_type = part.get("mimeType", "")
+            if mime_type == "text/plain" and part["body"].get("data"):
+                body = base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8", errors="ignore")
+                break
+            elif mime_type == "text/html" and part["body"].get("data") and not body:
+                # Fallback to HTML if no plain text
+                html = base64.urlsafe_b64decode(part["body"]["data"]).decode("utf-8", errors="ignore")
+                # Basic HTML stripping
+                body = re.sub(r'<[^>]+>', '', html)
+            elif "parts" in part:
+                # Nested multipart
+                body = get_email_body(part)
+                if body:
+                    break
+
+    return body.strip()
+
+
+def check_urgent_emails(
+    keywords: list = None,
+    max_results: int = 10,
+    save_to_vault: bool = True
+) -> dict:
+    """
+    Check Gmail for urgent emails and optionally save to vault.
+
+    Args:
+        keywords: List of keywords to search for (default: ["urgent", "URGENT", "asap", "ASAP", "important"])
+        max_results: Maximum number of emails to fetch
+        save_to_vault: Whether to save found emails as .md files
+
+    Returns:
+        dict with 'success', 'emails', 'saved_files', and optional 'error'
+    """
+    ensure_directories()
+
+    if keywords is None:
+        keywords = ["urgent", "URGENT", "asap", "ASAP", "important", "action required", "immediate"]
+
+    try:
+        service = get_gmail_service()
+
+        # Build search query
+        keyword_query = " OR ".join([f'"{kw}"' for kw in keywords])
+        query = f"is:unread ({keyword_query})"
+
+        # Fetch messages
+        results = service.users().messages().list(
+            userId="me",
+            q=query,
+            maxResults=max_results
+        ).execute()
+
+        messages = results.get("messages", [])
+
+        if not messages:
+            return {
+                "success": True,
+                "emails": [],
+                "saved_files": [],
+                "message": "No urgent emails found"
+            }
+
+        emails = []
+        saved_files = []
+
+        for msg_info in messages:
+            # Get full message
+            msg = service.users().messages().get(
+                userId="me",
+                id=msg_info["id"],
+                format="full"
+            ).execute()
+
+            headers = {h["name"]: h["value"] for h in msg["payload"]["headers"]}
+
+            email_data = {
+                "id": msg_info["id"],
+                "subject": headers.get("Subject", "(No Subject)"),
+                "from": headers.get("From", "Unknown"),
+                "date": headers.get("Date", "Unknown"),
+                "snippet": msg.get("snippet", ""),
+                "body": get_email_body(msg["payload"])
+            }
+
+            emails.append(email_data)
+
+            # Save to vault if requested
+            if save_to_vault:
+                file_path = save_email_to_vault(email_data)
+                if file_path:
+                    saved_files.append(file_path)
+
+        return {
+            "success": True,
+            "emails": emails,
+            "saved_files": saved_files,
+            "count": len(emails)
+        }
+
+    except FileNotFoundError as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "emails": [],
+            "saved_files": []
+        }
+    except ImportError as e:
+        return {
+            "success": False,
+            "error": str(e),
+            "emails": [],
+            "saved_files": []
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "error": f"Gmail API error: {str(e)}",
+            "emails": [],
+            "saved_files": []
+        }
+
+
+def save_email_to_vault(email_data: dict) -> str:
+    """
+    Save an email as a markdown file in vault/Needs_Action.
+
+    Args:
+        email_data: Dictionary with email details
+
+    Returns:
+        Path to saved file or None on error
+    """
+    try:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_subject = sanitize_filename(email_data["subject"])
+        filename = f"Urgent_Email_{timestamp}_{safe_subject}.md"
+        file_path = NEEDS_ACTION_DIR / filename
+
+        # Parse date if possible
+        try:
+            email_date = parsedate_to_datetime(email_data["date"]).strftime("%Y-%m-%d %H:%M")
+        except Exception:
+            email_date = email_data["date"]
+
+        markdown_content = f"""# Urgent Email: {email_data['subject']}
+
+**From:** {email_data['from']}
+**Date:** {email_date}
+**Status:** Needs Action
+**Imported:** {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+---
+
+## Preview
+{email_data['snippet']}
+
+---
+
+## Full Content
+{email_data['body'][:2000]}{'...(truncated)' if len(email_data['body']) > 2000 else ''}
+
+---
+
+## Actions
+- [ ] Read and understand
+- [ ] Respond to sender
+- [ ] Mark as handled
+"""
+
+        file_path.write_text(markdown_content, encoding="utf-8")
+        return str(file_path)
+
+    except Exception as e:
+        print(f"Error saving email: {e}")
+        return None
+
+
+def run_skill(action: str = "check", **kwargs) -> dict:
+    """
+    Main entry point for the email manager skill.
+
+    Args:
+        action: "check" to check for urgent emails
+        **kwargs: Additional arguments
+
+    Returns:
+        Result dictionary from the action
+    """
+    if action == "check":
+        keywords = kwargs.get("keywords", None)
+        max_results = kwargs.get("max_results", 10)
+        save_to_vault = kwargs.get("save_to_vault", True)
+        return check_urgent_emails(keywords, max_results, save_to_vault)
+
+    else:
+        return {
+            "success": False,
+            "error": f"Unknown action: {action}. Use 'check'."
+        }
+
+
+if __name__ == "__main__":
+    # Example usage
+    print("=== Email Manager Skill ===\n")
+    print("Checking for urgent emails...\n")
+
+    result = check_urgent_emails(max_results=5)
+
+    if result["success"]:
+        print(f"Found {result.get('count', 0)} urgent email(s)")
+        if result["saved_files"]:
+            print("\nSaved files:")
+            for f in result["saved_files"]:
+                print(f"  - {f}")
+        if result["emails"]:
+            print("\nEmail summaries:")
+            for email in result["emails"]:
+                print(f"  - {email['subject']} (from: {email['from']})")
+    else:
+        print(f"Error: {result['error']}")

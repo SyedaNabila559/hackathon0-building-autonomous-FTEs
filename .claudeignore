@@ -1,0 +1,15 @@
+# Byte-compiled / Caching files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+
+# Logs
+*.log
+*.pid
+
+# Secrets
+secrets/
+credentials/
