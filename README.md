@@ -18,7 +18,7 @@ If a traditional AI assistant feels invisible, this one feels like a transparent
 
 # ⚡ AI EMPLOYEE VAULT ROADMAP
 
-#🥉 BRONZE – Foundation Layer
+# 🥉 BRONZE – Foundation Layer
 
 Structured Vault Architecture
 
@@ -50,7 +50,7 @@ Social Media Automation
 
 Odoo Accounting Integration
 
-⚡ PLATINUM – Distributed Autonomy
+# ⚡ PLATINUM – Distributed Autonomy
 
 Hybrid Cloud + Local Architecture
 
@@ -59,69 +59,6 @@ Claim-by-Move Task Ownership Model
 Git-Based State Sync
 
 Cloud Deployment Ready
-
-## 📂 Project Structure
-
-AI-Employee-Vault/
-├── 🧠 Configuration & Environment
-│ ├── .claude/ # Claude configuration
-│ │ └── skills/ # Claude skill definitions
-│ ├── .obsidian/ # Obsidian workspace settings
-│ ├── .gitignore
-│ ├── .dockerignore
-│ ├── .claudeignore
-│ ├── mcp.json # MCP server configuration
-│ ├── odoo_config.json # Odoo integration settings
-│ ├── requirements.txt # Core dependencies
-│ └── requirements_linkedin.txt # LinkedIn module dependencies
-│
-├── 📂 Vault Layer (State System)
-│ ├── Vault_Template/ # Starter vault template
-│ └── vault/
-│   └── Needs_Action/ # Pending tasks
-│
-├── 📊 Governance & Control
-│ ├── CLAUDE.md # AI operating instructions
-│ ├── Company_Handbook.md # System rules & policies
-│ ├── Dashboard.md # Live system dashboard
-│ └── README.md # Project documentation
-│
-├── 🤖 Core Agent Engine
-│ ├── main.py # Entry point
-│ ├── agent_loop.py # Reasoning loop
-│ ├── autonomous_watcher.py # Autonomous state monitor
-│ ├── perception_watcher.py # Input perception layer
-│ ├── filesystem_watcher.py # Vault state watcher
-│ ├── action_processor.py # Task execution handler
-│ └── verify_setup.py # Environment validation
-│
-├── 📬 Communication Layer
-│ ├── communication_hub.py # Unified messaging control
-│ ├── gmail_connector.py
-│ ├── gmail_watcher.py
-│ ├── whatsapp_connector.py
-│ ├── send_approval_email.py
-│ └── send_test_email.py
-│
-├── 📢 Social & Publishing
-│ ├── linkedin_publisher.py
-│ ├── get_linkedin_token.py
-│ └── generate_image_and_post.py
-│
-├── 📊 Executive Intelligence
-│ ├── ceo_briefing_generator.py
-│ ├── schedule_briefing.sh
-│ └── schedule_briefing.bat
-│
-├── 🏢 Business Integrations
-│ ├── odoo_connector.py
-│ └── db_setup.py
-│
-├── 🧪 Testing & Utilities
-│ └── create_test_data.py
-│
-└── 🐳 Dockerfile # Container configuration
-
 
    ##  🚀 Getting Started
    
