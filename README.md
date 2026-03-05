@@ -186,31 +186,57 @@ docker run hac0
 
 ## 🧠 Built As
 
-Modular Autonomous AI Executive System
+**Modular Autonomous AI Executive System**
 
-🖼️ Diagram Concept
+---
 
-Title: HAC0 Autonomous AI Workflow
 
-Flow:
 
-[Email / Filesystem / Cloud Inputs] 
-          ↓
-       Watchers Layer
-          ↓
-       Agent Loop (Brain)
-          ↓
-     Action Processor
-          ↓
-  Connectors Layer
-  <div align="center">
-  ┌───────────────┬───────────────┬───────────────┬───────────┐
-  │    Gmail         │ LinkedIn      │ WhatsApp      │ Odoo      │
-  └───────────────┴───────────────┴───────────────┴───────────┘
-          ↓
-     Vault + Logs Update
-          ↓
-   CEO Briefing Generator
+            ┌─────────────────────────────┐
+            │  Email / Filesystem / Cloud │
+            │           Inputs            │
+            └──────────────┬──────────────┘
+                           │
+                           ▼
+                 ┌───────────────────┐
+                 │   Watchers Layer  │
+                 └─────────┬─────────┘
+                           │
+                           ▼
+                 ┌───────────────────┐
+                 │   Agent Loop      │
+                 │      (Brain)      │
+                 └─────────┬─────────┘
+                           │
+                           ▼
+                 ┌───────────────────┐
+                 │  Action Processor │
+                 └─────────┬─────────┘
+                           │
+                           ▼
+                   ┌─────────────────┐
+                   │ Connectors Layer│
+                   └─────────┬───────┘
+                             │
+        ┌──────────────┬──────────────┬──────────────┬──────────────┐
+        │    Gmail     │   LinkedIn   │   WhatsApp   │     Odoo     │
+        └──────────────┴──────────────┴──────────────┴──────────────┘
+                             │
+                             ▼
+                 ┌─────────────────────┐
+                 │   Vault + Logs      │
+                 │       Update        │
+                 └─────────┬───────────┘
+                           │
+                           ▼
+                 ┌─────────────────────┐
+                 │ CEO Briefing        │
+                 │     Generator       │
+                 └─────────────────────┘
+```
+
+
+   
 
    # 🙏 Acknowledgments
  - **Python 3.10+** — The brain behind HAC0, powering reasoning and decision-making  
