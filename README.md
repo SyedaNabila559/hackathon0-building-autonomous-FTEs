@@ -1,156 +1,220 @@
 ## Personal AI Employee Hackathon 0: Building Autonomous FTEs (Full-Time Equivalent) in 2026
 
-## 🤖 AI Employee Vault
+# 🤖 AI CEO Autonomous Agent
 
-Your Autonomous Digital Employee — Powered by Markdown
+An intelligent autonomous AI system designed to function as a digital CEO assistant.  
+It monitors communications, generates executive briefings, manages social publishing, and integrates with business systems like Gmail, LinkedIn, WhatsApp, and Odoo.
 
-A transparent, file-native AI assistant system that thinks, plans, and executes — with you in control.
+---
 
-## 🌟 Overview
+## 🚀 Features
 
-AI Employee Vault is a structured, autonomous agent system built entirely inside Obsidian using plain Markdown files.
+- 📧 Gmail monitoring & automated response workflows
+- 📊 CEO Briefing generation
+- 🔗 LinkedIn publishing automation
+- 💬 WhatsApp integration
+- 🏢 Odoo ERP integration
+- 📁 Filesystem monitoring
+- 🧠 Autonomous agent loop system
+- 🐳 Docker support
 
-Instead of hidden databases, background pipelines, or black-box automation, everything happens through visible file movements inside folders. Every action the AI takes is traceable, auditable, and reversible.
+---
 
-If a traditional AI assistant feels invisible, this one feels like a transparent digital employee working inside your file system.
+## 🏗️ Project Architecture
 
-## ⚡ Tier Roadmap
+The system is structured into modular components:
 
-# ⚡ AI EMPLOYEE VAULT ROADMAP
+- **Core Engine** – Agent loop & decision processing
+- **Connectors** – External service integrations
+- **Generators** – Content and briefing generation
+- **Watchers** – Monitoring systems
+- **Utils** – Setup & utility scripts
 
-# 🥉 BRONZE – Foundation Layer
+---
 
-Structured Vault Architecture
+## 📂 Folder Structure
 
-File Watchers
+hac0/
+│
+├── app/                          # Main application source code
+│   ├── core/                     # Core AI system logic
+│   │   ├── agent_loop.py
+│   │   ├── action_processor.py
+│   │   ├── autonomous_watcher.py
+│   │   ├── perception_watcher.py
+│   │   └── communication_hub.py
+│   │
+│   ├── connectors/               # External service integrations
+│   │   ├── gmail_connector.py
+│   │   ├── gmail_watcher.py
+│   │   ├── linkedin_publisher.py
+│   │   ├── whatsapp_connector.py
+│   │   └── odoo_connector.py
+│   │
+│   ├── generators/               # Content & briefing generators
+│   │   ├── ceo_briefing_generator.py
+│   │   ├── generate_image_and_post.py
+│   │   └── send_approval_email.py
+│   │
+│   ├── watchers/                 # File/system monitoring
+│   │   └── filesystem_watcher.py
+│   │
+│   └── utils/                    # Utility & setup scripts
+│       ├── db_setup.py
+│       ├── create_test_data.py
+│       ├── verify_setup.py
+│       └── get_linkedin_token.py
+│
+├── config/                       # Configuration & secrets
+│   ├── .env.example
+│   ├── credentials.json
+│   ├── odoo_config.json
+│   └── mcp.json
+│
+├── data/                         # Runtime data
+│   ├── logs/
+│   ├── vault/
+│   ├── Vault_Template/
+│   └── token.pickle
+│
+├── docs/                         # Documentation
+│   ├── CLAUDE.md
+│   ├── Company_Handbook.md
+│   └── Dashboard.md
+│
+├── scripts/                      # Automation scripts
+│   ├── schedule_briefing.sh
+│   ├── schedule_briefing.bat
+│   └── send_test_email.py
+│
+├── skills/                       # AI skill modules
+│
+├── requirements.txt
+├── requirements_linkedin.txt
+├── Dockerfile
+├── main.py
+├── .gitignore
+└── README.md
 
-Inbox Monitoring
+# ⚡ Tier Progression
 
-Basic Task Capture
+<div align="center">
 
-# 🥈 SILVER – Operational Intelligence
+| Tier | Features |
+|------|----------|
+| 🥉 **Bronze** | • Vault structure<br>• Base watchers<br>• Inbox monitoring |
+| 🥈 **Silver** | • Reasoning loop<br>• Human-in-the-Loop (HITL) approvals<br>• Task routing system<br>• MCP email integration |
+| 🥇 **Gold** | • 5 MCP servers<br>• Full auditing system<br>• Automated CEO briefings<br>• Social media automation<br>• Odoo accounting integration |
+| ⚡ **Platinum** | • Cloud + Local split architecture<br>• Claim-by-move system<br>• Git synchronization<br>• Full cloud deployment |
 
-Continuous Reasoning Loop
+</div>
 
-Human-in-the-Loop (HITL) Approvals
+---
 
-Smart Task Routing
+## 🧠 System Evolution Model
 
-MCP Email Integration
+The HAC0 system is designed to evolve in structured capability tiers:
 
-# 🥇 GOLD – Executive Automation
+- Each tier builds on the previous.
+- Architecture becomes more autonomous and distributed.
+- Governance, auditing, and execution maturity increase progressively.
+- Platinum represents enterprise-grade distributed AI operations.
 
-5 MCP Servers Active
+---
 
-Audit & Logging System
+## 🏗 Architecture Overview
 
-CEO Daily Brief Generator
+```
+Watchers → Agent Loop → Action Processor → Connectors → External Systems
+```
 
-Social Media Automation
+---
 
-Odoo Accounting Integration
+## 📂 Project Structure
 
-# ⚡ PLATINUM – Distributed Autonomy
+- `/app` → Main application logic
+- `/config` → Environment & credentials
+- `/data` → Logs, tokens, vault
+- `/docs` → Documentation
+- `/scripts` → Automation scripts
 
-Hybrid Cloud + Local Architecture
+---
 
-Claim-by-Move Task Ownership Model
+## ⚙️ Setup
 
-Git-Based State Sync
-
-Cloud Deployment Ready
-
-   ##  🚀 Getting Started
-   
-1️⃣ Clone the Repository
-
-git clone https:https://github.com/SyedaNabila559/hackathon0-building-autonomous-FTEs.git
-
-cd AI-Employee-Vault
-
-2️⃣ Create Virtual Environment (Recommended)
-
-python -m venv venv
-
-Activate environment:
-
-Windows
-
-venv\Scripts\activate
-
-Mac / Linux
-
-source venv/bin/activate
-
-3️⃣ Install Dependencies
-
+```bash
 pip install -r requirements.txt
-
-For LinkedIn module:
-
 pip install -r requirements_linkedin.txt
+```
 
-*4️⃣ Configure Environment
+---
 
-Update mcp.json
+## ▶ Run
 
-Configure odoo_config.json
-
-Set up Gmail API credentials
-
-Verify connectors
-
-Customize your Vault structure if needed
-
-5️⃣ Verify Setup
-
-python verify_setup.py
-
-6️⃣ Run the AI Employee
-
+```bash
 python main.py
+```
 
-Your autonomous file-driven AI system is now live.
+---
 
-🐳 Run with Docker (Optional)
+## 🔒 Security
 
-Build:
+Add to `.gitignore`:
 
-docker build -t ai-employee-vault .
+```
+config/credentials.json
+data/token.pickle
+.env
+```
 
-Run:
+---
 
-docker run -d ai-employee-vault**
+## 🐳 Docker
 
-## 🙏 Acknowledgments
+```bash
+docker build -t hac0 .
+docker run hac0
+```
 
-AI Employee Vault stands on the shoulders of powerful open-source tools and ecosystems that make transparent autonomy possible.
+---
 
-This system is built with:
+## 🧠 Built As
 
-Python 3.10+ — The core engine powering automation, orchestration, and reasoning logic
+Modular Autonomous AI Executive System
 
-Obsidian — The human-readable vault interface where every state lives as Markdown
+🖼️ Diagram Concept
 
-Google APIs — Secure integration for Gmail and Calendar workflows
+Title: HAC0 Autonomous AI Workflow
 
-MCP Protocol — Modular agent-to-tool communication architecture
+Flow:
 
-Playwright — Reliable browser automation for web-based execution
+[Email / Filesystem / Cloud Inputs] 
+          ↓
+       Watchers Layer
+          ↓
+       Agent Loop (Brain)
+          ↓
+     Action Processor
+          ↓
+  Connectors Layer
+  ┌───────────────┬───────────────┬───────────────┬───────────┐
+  │ Gmail         │ LinkedIn      │ WhatsApp      │ Odoo      │
+  └───────────────┴───────────────┴───────────────┴───────────┘
+          ↓
+     Vault + Logs Update
+          ↓
+   CEO Briefing Generator
 
-Each of these technologies plays a critical role in ensuring that the AI remains:
+   # 🙏 Acknowledgments
+ - **Python 3.10+** — The brain behind HAC0, powering reasoning and decision-making  
+- **Obsidian** — Intelligent vault interface for structured memory and context  
+- **Google APIs** — Seamless Gmail & Calendar orchestration  
+- **MCP Protocol** — The connective tissue for agent-tool collaboration  
+- **Playwright** — Automated web interactions, making browsers your AI assistant
 
-Transparent
+Built with ❤️ by **Nabila Bannay Khan**
 
-Extensible
+### 💡 AI Inspiration
 
-Auditable
-
-Human-controlled
-
-#  Built with ❤️ by Nabila Bannay Khan
-  
-  “The best AI isn’t the one that hides in the cloud.
-It’s the one that works beside you — in folders you control.”
-
-— AI Employee Vault
+*"The best way to predict the future is to build it."*  
+– AI-driven vision for autonomous systems
