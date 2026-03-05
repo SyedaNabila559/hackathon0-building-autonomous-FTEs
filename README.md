@@ -34,9 +34,6 @@ The system is structured into modular components:
 
 ## 📂 Folder Structure
 
-# HAC0 – Autonomous AI System
-
-## Project Structure
 
 ```
 hac0/
@@ -104,74 +101,6 @@ hac0/
 
 ---
 
-## Overview
-
-HAC0 is an **autonomous AI system** designed to:
-
-* Monitor external systems
-* Process information
-* Generate content
-* Communicate with external platforms
-* Assist executives with automated briefings
-
----
-
-## Key Components
-
-### Core
-
-Handles the main AI logic and decision-making loop.
-
-### Connectors
-
-Integrations with external platforms such as Gmail, LinkedIn, WhatsApp, and Odoo.
-
-### Generators
-
-Modules responsible for generating reports, content, and images.
-
-### Watchers
-
-System watchers that monitor files, emails, or external triggers.
-
-### Utilities
-
-Scripts used for setup, verification, and system maintenance.
-
----
-
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies
-
-```
-pip install -r requirements.txt
-```
-
-3. Configure environment variables
-
-```
-cp config/.env.example .env
-```
-
-4. Run the application
-
-```
-python main.py
-```
-
----
-
-## Documentation
-
-Project documentation can be found in the `docs/` directory.
-
----
-
-## License
-
-Internal project – use according to company policies.
 
 # ⚡ Tier Progression
 
@@ -274,6 +203,7 @@ Flow:
      Action Processor
           ↓
   Connectors Layer
+  <div align="center">
   ┌───────────────┬───────────────┬───────────────┬───────────┐
   │    Gmail         │ LinkedIn      │ WhatsApp      │ Odoo      │
   └───────────────┴───────────────┴───────────────┴───────────┘
